@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import { InputContainer } from "./input";
 import { InputProps } from "../utils/types";
-import { Text } from "./Typography";
-import { useState } from "react";
-import CaretDown from "../vectors/caret-down";
 
 const SelectContainer = styled(InputContainer)<InputProps>`
   .input-wrapper {
@@ -12,6 +9,16 @@ const SelectContainer = styled(InputContainer)<InputProps>`
     align-items: center;
     position: relative;
     width: 100%;
+
+    select {
+      width: 100%;
+      font-size: 1.25rem;
+      border: none;
+      outline: none;
+      option {
+        font-size: 2rem;
+      }
+    }
 
     .select {
       position: absolute;
@@ -31,32 +38,28 @@ interface SelectProps extends InputProps {
   options: Array<string>;
 }
 
-const Select = ({ title, value, required, width, options }: SelectProps) => {
-  const [toggle, setToggle] = useState(false);
-  const [state, setState] = useState(options[0]);
-
+const Select = ({
+  title,
+  name,
+  required,
+  width,
+  options,
+  handleChange,
+}: SelectProps) => {
   return (
-    <SelectContainer show={toggle} width={width}>
+    <SelectContainer width={width}>
       <label htmlFor={title}>
         {title} {required && <sup>*</sup>}
       </label>
-      <div className="input-wrapper" onClick={() => setToggle(!toggle)}>
-        <Text>{state}</Text> <CaretDown onClick={() => setToggle(!toggle)} />
-        <div className="select" onClick={() => setToggle(!toggle)}>
-          {options.map((val, i) => (
-            <Text
-              key={val}
-              hoverColor="primary"
-              pd="0.5rem"
-              onClick={() => {
-                setState(val);
-                setToggle(!toggle);
-              }}
-            >
-              {val}
-            </Text>
-          ))}
-        </div>
+      <div className="input-wrapper">
+        <select
+          name={name}
+          onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
+        >
+          {options.map((val) => {
+            return <option key={val}>{val}</option>;
+          })}
+        </select>
       </div>
     </SelectContainer>
   );

@@ -8,10 +8,15 @@ const TabContainer = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors["black"]};
 `;
 
-const NavTab = () => {
-  const [stage, setStage] = useState(0);
-  const stages = ["Personal Info", "Billing Info", "Confirm Payment"];
-
+const NavTab = ({
+  stages = [],
+  stage,
+  handleChange,
+}: {
+  stages?: Array<string>;
+  stage?: number;
+  handleChange: (i: number) => void;
+}) => {
   return (
     <TabContainer>
       {stages.map((val, i) => (
@@ -19,7 +24,7 @@ const NavTab = () => {
           key={val}
           isActive={i === stage}
           text={val}
-          onClick={() => setStage(i)}
+          onClick={() => handleChange(i)}
         />
       ))}
     </TabContainer>

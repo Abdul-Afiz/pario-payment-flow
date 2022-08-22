@@ -18,7 +18,7 @@ const FormLayout = ({
   primaryBtn,
 }: {
   children: ReactNode;
-  onSubmit?: () => void;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onCancel?: () => void;
   primaryBtn?: string;
 }) => {

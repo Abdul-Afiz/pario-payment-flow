@@ -16,7 +16,8 @@ export const Text = styled.span<TextProps>`
   padding: ${({ pd }) => pd};
   margin: ${({ mg }) => mg};
   cursor: pointer;
-
+  width: ${({ width }) => width};
+  text-decoration: ${({ decoration }) => decoration};
   :hover {
     color: ${({ theme, hoverColor }) => theme.colors[hoverColor as string]};
   }

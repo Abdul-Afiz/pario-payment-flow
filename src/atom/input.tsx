@@ -1,8 +1,9 @@
+import { MutableRefObject } from "react";
 import styled from "styled-components";
-import { InputProps } from "../utils/types";
+import { InputProps, TextProps } from "../utils/types";
 import { Text } from "./Typography";
 
-export const InputContainer = styled.div<InputProps>`
+export const InputContainer = styled.div<InputProps & { bold?: boolean }>`
   width: ${({ width }) => width ?? "100%"};
   display: flex;
   flex-direction: column;
@@ -36,11 +37,11 @@ export const InputContainer = styled.div<InputProps>`
       border: none;
       outline: none;
       font-size: 1.25rem;
-      color: ${({ theme }) => theme.colors.grey};
+      color: ${({ theme }) => theme.colors.grey2};
       background: transparent;
 
       &::placeholder {
-        color: ${({ theme }) => theme.colors["grey2"]};
+        color: ${({ theme }) => theme.colors["grey"]};
       }
     }
   }
@@ -48,31 +49,45 @@ export const InputContainer = styled.div<InputProps>`
 
 const Input = ({
   name,
+  type,
+  bold,
+  error,
   title,
   value,
   width,
-  description,
   required,
+  description,
+  maxLength,
   placeholder,
-}: InputProps) => {
+  handleChange,
+  ...props
+}: InputProps & { bold?: boolean }) => {
   return (
-    <InputContainer width={width}>
+    <InputContainer width={width} bold={bold}>
       <label htmlFor={title}>
         {title} {required && <sup>*</sup>}
       </label>
-      {description && (
+      {description ? (
         <Text color="lightBlue" mg="1rem 0 0 0">
           {description}
         </Text>
-      )}
+      ) : error ? (
+        <Text color="red" mg="1rem 0 0 0">
+          {error}
+        </Text>
+      ) : null}
+
       <div className="input-wrapper">
         <input
-          type="text"
+          onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>}
+          name={name}
+          type={type ?? "text"}
           required={required}
           value={value}
           id={title}
-          name={name}
           placeholder={placeholder}
+          maxLength={maxLength ?? 25}
+          {...props}
         />
       </div>
     </InputContainer>
